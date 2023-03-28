@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <h2>#4 Уведомление</h2>
-    <button type="button" @click="notificationAreaInterface.createNotification()">Открыть</button>
-    <notification-area @interface="(notificationAreaInterface) => mountNotificationInterface(notificationAreaInterface)" :position="'right'" :timeout="5000"/>
+    <button type="button" @click="notifications.push({ id: uniqueNotificationId++ })">Открыть</button>
+    <notification-area 
+      :notifications="notifications" 
+      :position="'right'" 
+      :timeout="5000" @onElementRemoved="(id) => notifications = notifications.filter(n => n.id != id)"/>
   </div>
 </template>
 
@@ -16,12 +19,8 @@ export default {
   },
   data() {
     return {
-      notificationAreaInterface: {}
-    }
-  },
-  methods: {
-    mountNotificationInterface(notificationAreaInterface) {
-      this.notificationAreaInterface = notificationAreaInterface;
+      notifications: [],
+      uniqueNotificationId: 0
     }
   }
 }

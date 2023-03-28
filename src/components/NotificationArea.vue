@@ -1,13 +1,13 @@
 <template>
     <div :class="[`notification-area`, `notification-area--${position}`]">
-        <notification-card
-        v-for="notification in notifications"
-        :key="notification.id"
-        :id="notification.id"
-        :title="notification.title"
-        :content="notification.content"
-        :timeout="notification.timeout"
-        @onNotificationDisposed="(id) => disposeNotification(id)"/>
+        <notification-card 
+            v-for="notification in notifications" 
+            :key="notification.id" 
+            :id="notification.id"
+            :title="notification.title" 
+            :content="notification.content" 
+            :timeout="notification.timeout"
+            @onNotificationDisposed="(id) => $emit('onElementRemoved', id)" />
     </div>
 </template>
 
@@ -19,10 +19,19 @@ export default {
     components: {
         NotificationCard
     },
-    mounted() {
-        this.$emit('interface', { createNotification: (title, content, timeout) => this.createNotification(title, content, timeout) });
-    },
     props: {
+        notifications: {
+            type: Array,
+            validator(array) {
+                let isValid = true;
+                array.forEach(e => {
+                    if (e.id === undefined) {
+                        isValid = false;
+                    }
+                });
+                return isValid;
+            }
+        },
         position: {
             type: String,
             required: true,
@@ -35,24 +44,9 @@ export default {
             default: 5000
         }
     },
-    data() {
-        return {
-            notifications: [],
-            uniqueId: 0
-        }
-    },
     emits: [
-        'interface'
-    ],  
-    methods: {
-        createNotification(title, content) {
-            console.log("created notification with id ", this.uniqueId);
-            this.notifications.push({ id: this.uniqueId++, title: title, content: content, timeout: this.timeout });
-        },
-        disposeNotification(id) {
-            this.notifications = this.notifications.filter((value) => value.id != id);
-        }
-    }
+        'onElementRemoved'
+    ]
 }
 </script>
 
