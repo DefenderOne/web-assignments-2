@@ -1,17 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h2>#4 Уведомление</h2>
+    <button type="button" @click="notificationAreaInterface.createNotification()">Открыть</button>
+    <notification-area @interface="(notificationAreaInterface) => mountNotificationInterface(notificationAreaInterface)" :position="'right'" :timeout="5000"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NotificationArea from './components/NotificationArea.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NotificationArea
+  },
+  data() {
+    return {
+      notificationAreaInterface: {}
+    }
+  },
+  methods: {
+    mountNotificationInterface(notificationAreaInterface) {
+      this.notificationAreaInterface = notificationAreaInterface;
+    }
   }
 }
 </script>
@@ -21,8 +32,7 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  overflow-x: 0;
 }
 </style>
