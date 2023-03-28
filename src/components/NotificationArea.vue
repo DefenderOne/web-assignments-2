@@ -7,12 +7,13 @@
             :title="notification.title" 
             :content="notification.content" 
             :timeout="notification.timeout"
-            @onNotificationDisposed="(id) => $emit('onElementRemoved', id)" />
+            @onNotificationDisposed="(id) => disposeNotification(id)"/>
     </div>
 </template>
 
 <script>
 import NotificationCard from './NotificationCard.vue';
+import NotificationManager from '@/NotificationManager';
 
 export default {
     name: "notification-area",
@@ -20,33 +21,24 @@ export default {
         NotificationCard
     },
     props: {
-        notifications: {
-            type: Array,
-            validator(array) {
-                let isValid = true;
-                array.forEach(e => {
-                    if (e.id === undefined) {
-                        isValid = false;
-                    }
-                });
-                return isValid;
-            }
-        },
         position: {
             type: String,
             required: true,
             validator(value) {
                 return ['left', 'right'].includes(value);
             }
-        },
-        timeout: {
-            type: Number,
-            default: 5000
         }
     },
-    emits: [
-        'onElementRemoved'
-    ]
+    computed: {
+        notifications: () => {
+            return NotificationManager.getNotifications();
+        }
+    },
+    methods: {
+        disposeNotification(id) {
+            NotificationManager.removeNotification(id);
+        }
+    }
 }
 </script>
 

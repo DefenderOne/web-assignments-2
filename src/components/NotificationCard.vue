@@ -48,7 +48,6 @@ export default {
     methods: {
         onDisposed() {
             this.state = State.Disposed;
-            console.log("disposed notification with id ", this.id);
             this.$emit('onNotificationDisposed', this.id);
         }
     }

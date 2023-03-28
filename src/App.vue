@@ -1,16 +1,17 @@
 <template>
   <div id="app">
     <h2>#4 Уведомление</h2>
-    <button type="button" @click="notifications.push({ id: uniqueNotificationId++ })">Открыть</button>
+    <button type="button" @click="addNotification">Открыть</button>
     <notification-area 
+      v-if="isNotificationAreaShown"
       :notifications="notifications" 
-      :position="'right'" 
-      :timeout="5000" @onElementRemoved="(id) => notifications = notifications.filter(n => n.id != id)"/>
+      :position="'right'"/>
   </div>
 </template>
 
 <script>
 import NotificationArea from './components/NotificationArea.vue';
+import NotificationManager from './NotificationManager';
 
 export default {
   name: 'App',
@@ -21,6 +22,17 @@ export default {
     return {
       notifications: [],
       uniqueNotificationId: 0
+    }
+  },
+  computed: {
+    isNotificationAreaShown() {
+      return NotificationManager.hasNotifications();
+    }
+  },
+  methods: {
+    addNotification() {
+      var date = new Date(Date.now());
+      NotificationManager.addNotification('Уведомление ' + date.toLocaleTimeString());
     }
   }
 }
