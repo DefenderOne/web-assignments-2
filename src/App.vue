@@ -11,7 +11,7 @@
 
 <script>
 import NotificationArea from './components/NotificationArea.vue';
-import NotificationManager from './NotificationManager';
+import NotificationManager from './notification-manager';
 
 export default {
   name: 'App',
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     addNotification() {
-      var date = new Date(Date.now());
+      let date = new Date(Date.now());
       NotificationManager.addNotification('Уведомление ' + date.toLocaleTimeString());
     }
   }

@@ -1,13 +1,12 @@
 <template>
-    <div :class="['notification', `notification--${state}`]">
+    <div class="notification">
         <h2 class="notification__title">{{ title }}</h2>
         <div class="notification__content">{{ content }}</div>
-        <div class="notification__close-button" @click="onDisposed()">&#x2715;</div>
+        <div class="notification__close-button" @click="dispose()">&#x2715;</div>
     </div>
 </template>
 
 <script>
-const State = { Created: 'created', Disposed: 'disposed' };
 
 export default {
     name: "notification-card",
@@ -30,24 +29,13 @@ export default {
         }
     },
     created() {
-        setTimeout(() => this.onDisposed(), this.timeout);
-    },
-    data() {
-        return {
-            state: State.Created
-        }
-    },
-    computed: {
-        getState() {
-            return this.state;
-        }
+        setTimeout(() => this.dispose(), this.timeout);
     },
     emits: [
         'onNotificationDisposed'
     ],
     methods: {
-        onDisposed() {
-            this.state = State.Disposed;
+        dispose() {
             this.$emit('onNotificationDisposed', this.id);
         }
     }
@@ -61,19 +49,6 @@ export default {
     padding: 15px 25px;
     width: 330px;
     box-shadow: -2px 2px 15px 2px rgb(0 0 0 / 10%);
-
-    &--appeared {
-        animation: notification-appeared-animation .2s;
-        animation-duration: 200ms;
-        animation-direction: alternate;
-    }
-
-    &--disposed {
-        animation: notification-removed-animation .3ms;
-        animation-duration: 300ms;
-        animation-fill-mode: forwards;
-        animation-direction: alternate;
-    }
 
     &__group {
         position: relative;
@@ -102,26 +77,6 @@ export default {
         right: 10px;
         cursor: pointer;
         user-select: none;
-    }
-}
-
-@keyframes notification-appeared-animation {
-    0% {
-        transform: translate(200px, 0);
-    }
-
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-@keyframes notification-removed-animation {
-    0% {
-        opacity: 100%;
-    }
-
-    100% {
-        opacity: 0%;
     }
 }
 </style>

@@ -13,7 +13,7 @@
 
 <script>
 import NotificationCard from './NotificationCard.vue';
-import NotificationManager from '@/NotificationManager';
+import NotificationManager from '@/notification-manager';
 
 export default {
     name: "notification-area",
